@@ -1,3 +1,3 @@
-# Sample_Dialog
+# SampleDialog
 
 Android dialog example.
