@@ -29,6 +29,8 @@ public class MainFragment extends Fragment {
     // Keeps ButterKnife Unbinder object to properly unbind views in onDestroyView of the fragment
     private Unbinder mUnbinder;
 
+    private Date mDate;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,10 +42,10 @@ public class MainFragment extends Fragment {
         mUnbinder = ButterKnife.bind(this, v);
 
         // Create new date (by default new date's value is set to current date)
-        Date date = new Date();
+        mDate = new Date();
 
         // Display current date inside date button
-        mDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy", date));
+        mDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy", mDate));
 
         return v;
     }
@@ -63,8 +65,8 @@ public class MainFragment extends Fragment {
         // (in our case - host activity's fragment manaager).
         FragmentManager manager = getFragmentManager();
 
-        // Create new fragment with date dialog
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        // Create new fragment with date dialog and pass date as fragment's arguments
+        DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(mDate);
 
         // Add fragment into FragmentManager and show fragment on screen
         datePickerFragment.show(manager, DIALOG_DATE_TAG);
