@@ -1,7 +1,10 @@
 package com.gpetuhov.android.sampledialog;
 
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +15,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +26,9 @@ public class DatePickerFragment extends DialogFragment {
 
     // Key for fragment's argument with date
     public static final String ARG_DATE_KEY = "ArgDateKey";
+
+    // Key for saving date inside intent
+    public static final String EXTRA_DATE = "com.gpetuhov.android.sampledialog.date";
 
     @BindView(R.id.dialog_date_date_picker)
     DatePicker mDatePicker;
@@ -76,7 +83,22 @@ public class DatePickerFragment extends DialogFragment {
         AlertDialog dateDialog = new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.date_dialog_title)
-                .setPositiveButton(android.R.string.ok, null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // Get year, month and day values from the date picker
+                        int year = mDatePicker.getYear();
+                        int month = mDatePicker.getMonth();
+                        int day = mDatePicker.getDayOfMonth();
+
+                        // Create date from these values
+                        Date date = new GregorianCalendar(year, month, day).getTime();
+
+                        // Send date to target fragment
+                        sendResult(Activity.RESULT_OK, date);
+                    }
+                })
                 .create();
 
         return dateDialog;
@@ -88,5 +110,20 @@ public class DatePickerFragment extends DialogFragment {
 
         // This is recommended to do here when using Butterknife in fragments
         mUnbinder.unbind();
+    }
+
+    private void sendResult(int resultCode, Date date) {
+
+        // If there is no target fragment, do nothing and return
+        if (getTargetFragment() == null) {
+            return;
+        }
+
+        // Create new intent and put date into it
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DATE, date);
+
+        // Invoke target fragment's onActivityResult() with this intent
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
