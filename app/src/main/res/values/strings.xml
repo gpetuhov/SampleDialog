@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SampleDialog</string>
+
+    <string name="date_button_label">Date</string>
+    <string name="date_dialog_title">Choose date</string>
 </resources>
