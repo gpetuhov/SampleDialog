@@ -9,7 +9,6 @@
 
     <Button
         android:id="@+id/date_button"
-        android:text="@string/date_button_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,7 @@ public class MainFragment extends Fragment {
     // ID of the fragment with date dialog in FragmentManager's list
     public static final String DIALOG_DATE_TAG = "DialogDateTag";
 
+    // Button displays date dialog
     @BindView(R.id.date_button) Button mDateButton;
 
     // Keeps ButterKnife Unbinder object to properly unbind views in onDestroyView of the fragment
@@ -34,6 +38,12 @@ public class MainFragment extends Fragment {
 
         // Bind views and save reference to Unbinder object
         mUnbinder = ButterKnife.bind(this, v);
+
+        // Create new date (by default new date's value is set to current date)
+        Date date = new Date();
+
+        // Display current date inside date button
+        mDateButton.setText(DateFormat.format("EEEE, MMM dd, yyyy", date));
 
         return v;
     }
